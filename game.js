@@ -1,15 +1,18 @@
 var game = new Phaser.Game(300, 300, Phaser.AUTO, '', {preload: preload, create: create, update: update});
 
 function preload(){
-
+    game.stage.backgroundColor = '#fff';
+    game.load.spritesheet('beaker', 'beaker.png', 50, 50, 3);
 }
 
 function create(){
     function Tile(x, y){
         this.x = x;
         this.y = y;
+        this.sprite = game.add.sprite(this.x, this.y, 'beaker');
+        this.sprite.frame = 0;
         this.delay = 1;
-        this.color = '#fff';
+        this.text = game.add.text(this.x + 5, this.y + 5, this.delay, {font: '18px Helvetica', fill: 'black'});
     }
 
     Tile.prototype.drop = function(){
@@ -21,10 +24,10 @@ function create(){
     }
 
     Tile.prototype.change = function(){
-        if (this.color === '#fff'){
-            this.color = '#ffa500';
+        if (this.sprite.frame === 0){
+            this.sprite.frame = 1;
         } else {
-            this.color = '#000';
+            this.sprite.frame = 2;
         }
     }
 
