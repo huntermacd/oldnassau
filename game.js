@@ -213,6 +213,52 @@ function resetBeakers(blackBeakers){
         blackBeakers[i].maxDelay = 1;
         blackBeakers[i].text.setText(blackBeakers[i].delay);
     };
+    checkMopMeter();
+
+    game.time.events.add(500, shift, this).autoDestroy = true;
+}
+
+function checkMopMeter(){
+    // if mopMeter >= 36, reduce spillMeter by 1
+    // reset mopMeter to 0
+    if (mopMeter >= 36){
+        spillMeter -= 1;
+        mopMeter = 0;
+    }
+}
+
+function checkSpillMeter(){
+    // if spillMeter >= 6, trigger gameEnd
+}
+
+function shift(){
+    // loop through ALL beakers backwards
+    // if beaker is orange,
+    // and beaker below is not undefined,
+    // make beaker below orange and beaker clear
+    for (var i = tileArray.length - 1; i > 0; i--) {
+        var beaker = tileArray[i];
+        var beakerBelow = tileFromCoords([tileArray[i].coords[0], tileArray[i].coords[1] + 1]);
+        if (beaker.sprite.frame === 1){
+            if (beakerBelow !== undefined){
+                beaker.sprite.frame = 0;
+                beakerBelow.sprite.frame = 1;
+            }
+        }
+    };
+}
+
+function newTopRow(){
+    // loop through all top row beakers
+    // randomly set them to orange
+}
+
+function gameStart(){
+    // setup new game
+}
+
+function gameEnd(){
+    // clean up game, prompt to replay
 }
 
 function tileFromCoords(coords){
@@ -251,7 +297,9 @@ Loop:
 7. All solitary black beakers are totaled and added to spill meter
     7a. If spill meter reaches 6, game over
 8. All black beakers are reset to clear and delay to 1 (max delay to 1 also)
-9. Player takes another turn
+9. All remaining orange beakers shift down one position
+10. New row of random beakers is added to the top row
+11. Player takes another turn
 
 notes:
 
