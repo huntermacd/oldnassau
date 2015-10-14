@@ -146,64 +146,50 @@ function hasNeighbors(blackBeakers){
     var hasNeighborsArray = [];
     var isSolitaryArray = [];
     for (var i = 0; i < blackBeakers.length; i++) {
-        if (tileFromCoords([blackBeakers[i].coords[0], blackBeakers[i].coords[1] - 1]) !== undefined){
+        var n = tileFromCoords([blackBeakers[i].coords[0], blackBeakers[i].coords[1] - 1]);
+        var e = tileFromCoords([blackBeakers[i].coords[0] + 1, blackBeakers[i].coords[1]]);
+        var s = tileFromCoords([blackBeakers[i].coords[0], blackBeakers[i].coords[1] + 1]);
+        var w = tileFromCoords([blackBeakers[i].coords[0] - 1, blackBeakers[i].coords[1]]);
+        if (n !== undefined){
             // if N tile exists AND beaker is black
-            if (tileFromCoords([blackBeakers[i].coords[0], blackBeakers[i].coords[1] - 1]).sprite.frame === 2){
+            if (n.sprite.frame === 2){
                 hasNeighborsArray.push(blackBeakers[i]);
-                continue;
-            } else {
-                isSolitaryArray.push(blackBeakers[i]);
                 continue;
             }
         }
-        if (tileFromCoords([blackBeakers[i].coords[0] + 1, blackBeakers[i].coords[1]]) !== undefined){
+        if (e !== undefined){
             // if E tile exists AND beaker is black
-            if (tileFromCoords([blackBeakers[i].coords[0] + 1, blackBeakers[i].coords[1]]).sprite.frame === 2){
+            if (e.sprite.frame === 2){
                 hasNeighborsArray.push(blackBeakers[i]);
-                continue;
-            } else {
-                isSolitaryArray.push(blackBeakers[i]);
                 continue;
             }
         }
-        if (tileFromCoords([blackBeakers[i].coords[0], blackBeakers[i].coords[1] + 1]) !== undefined){
+        if (s !== undefined){
             // if S tile exists AND beaker is black
-            if (tileFromCoords([blackBeakers[i].coords[0], blackBeakers[i].coords[1] + 1]).sprite.frame === 2){
+            if (s.sprite.frame === 2){
                 hasNeighborsArray.push(blackBeakers[i]);
-                continue;
-            } else {
-                isSolitaryArray.push(blackBeakers[i]);
                 continue;
             }
         }
-        if (tileFromCoords([blackBeakers[i].coords[0] - 1, blackBeakers[i].coords[1]]) !== undefined){
+        if (w !== undefined){
             // if W tile exists AND beaker is black
-            if (tileFromCoords([blackBeakers[i].coords[0] - 1, blackBeakers[i].coords[1]]).sprite.frame === 2){
+            if (w.sprite.frame === 2){
                 hasNeighborsArray.push(blackBeakers[i]);
-                continue;
-            } else {
-                isSolitaryArray.push(blackBeakers[i]);
                 continue;
             }
         }
+        // if beaker has no neighbors
+        isSolitaryArray.push(blackBeakers[i]);
     };
     addToSpill(isSolitaryArray);
     addToMop(hasNeighborsArray);
-    // game.time.events.add(500, resetBeakers, this, blackBeakers).autoDestroy = true;
+    game.time.events.add(500, resetBeakers, this, blackBeakers).autoDestroy = true;
     return hasNeighborsArray;
-}
-
-function debugFunc(array){
-    for (var i = 0; i < array.length; i++) {
-        console.log(array[i].coords);
-    };
-    console.log('=-=-=-=-=-=-=-=');
 }
 
 function addToSpill(solitaryBlackBeakers){
     // add 1 to spill meter for every
     // solitary black beaker
-    console.log(solitaryBlackBeakers);
     for (var i = 0; i < solitaryBlackBeakers.length; i++) {
         spillMeter += 1;
     };
